@@ -12,7 +12,7 @@ public class HelloWorld : MonoBehaviour
     sbyte withPositive = 127;
     short smallNo = 32_000;
     ushort smallNoNegative = 64_000;
-    public int speed = 20;
+    public int speed = 50;
     uint speed2 = 25;
     long bigNumber = 1_000_000_000_000_000_000;
     
@@ -26,14 +26,14 @@ public class HelloWorld : MonoBehaviour
     char smiley = 's';
 
     //Unity ozel
-    public GameObject helloText;
+   // public GameObject helloText;
 
     // Start is called before the first frame update
     void Start()
     {
-        print(myText); // console mesaji
-        Application.targetFrameRate = 100; // Oyunun fpsini sabitleme
-        helloText.GetComponent<TextMeshPro>().text = "Hello World!!";
+       // print(myText); // console mesaji
+       // Application.targetFrameRate = 100; // Oyunun fpsini sabitleme
+       // helloText.GetComponent<TextMeshPro>().text = "Hello World!!";
     }
 
     // Update is called once per frame
