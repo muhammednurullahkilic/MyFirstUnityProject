@@ -1,81 +1,87 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class Move : MonoBehaviour
 {
-    public int speed=15, Score = 0;
-    // public Transform LeftPoint, RightPoint, MidPoint;
-    // public int LeftPos,RightPos,MidPos;
-    public bool atLeft, atRight, atMid = true, onMove = false;
+    public int speed = 1, coinCount = 0, heartCount = 1;
+    public float leftBorder = -2.5f, rightBorder = 2.5f;
+    //float height = 1.25f;
+    float transSpeed = 0.25f;
+    public bool onLeft = false, mid = true, onRight = false;
 
 
+    public void animPlay(string animName)
+    {
+        GetComponent<Animator>().SetBool("Run", false);
+        GetComponent<Animator>().SetBool("Idle", false);
+        GetComponent<Animator>().SetBool("Die", false);
+        GetComponent<Animator>().SetBool(animName, true);
+    }
 
-    
+    //private void OnControllerColliderHit(ControllerColliderHit hit)
+    //{
+    //    if(hit.gameObject.CompareTag("Obstacle"))
+    //    {
+    //        animPlay("Die");
+    //        speed = 0;
+    //    }
+    //}
+
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(new Vector3(0,0,1)*Time.deltaTime*speed);
-        if(Input.GetKeyDown(KeyCode.A) && atLeft == false &&!onMove)
+        transform.Translate(new Vector3(0, 0, 1) * Time.deltaTime * speed);
+        //GetComponent<CharacterController>().Move(new Vector3(0, 0, 1) * Time.deltaTime * speed);
+
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    GetComponent<Animator>().SetBool("Run", true);
+        //    animPlay("Run");
+        //    speed = 200;
+        //}
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-
-
-            if (atMid)
-            {
-                atLeft = true;
-                atMid =false;
-            }
-            else if(atRight)
-            {
-                atRight = false;
-                atMid = true;
-            }
-            // transform.position=new Vector3(transform.position.x - 4.5f,transform.position.y,transform.position.z);
-            transform.DOMoveX(transform.position.x - 4.5f, 0.25f).SetEase(Ease.Linear).OnComplete(OnMoveToFalse);
-            onMove = true;
-
+            GetComponent<Animator>().SetTrigger("Jump");
+            //transform.DOJump(new Vector3(transform.position.x,2,transform.position.z), 1, 1, 0.5f);
+            transform.DOMoveY(4, 0.5f);
+            transform.DOMoveY(0, 1f).SetDelay(0.5f);
         }
-        if (Input.GetKeyDown(KeyCode.D) && atRight == false && !onMove)
+        if (Input.GetKeyDown(KeyCode.A) && onLeft == false && mid == true)
         {
-
-           
-            if (atMid)
-            {
-                atRight = true;
-                atMid = false;
-            }
-            else if (atLeft)
-            {
-                atLeft = false;
-                atMid = true;
-            }
-
-            //transform.position = new Vector3(transform.position.x + 4.5f, transform.position.y, transform.position.z);
-            transform.DOMoveX(transform.position.x + 4.5f, 0.25f).SetEase(Ease.Linear).OnComplete(OnMoveToFalse);
-            onMove = true;
+            onLeft = true;
+            mid = false;
+            transform.DOMoveX(leftBorder, transSpeed);
+            GetComponent<Animator>().SetTrigger("GoLeft");
+            //transform.position = new Vector3(-2, height, transform.position.z);
         }
-    }
-
-    void OnMoveToFalse()
-    {
-        onMove = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Finish"))
+        else if (Input.GetKeyDown(KeyCode.A) && mid == false && onRight == true)
         {
-            speed = 0;
+            onRight = false;
+            mid = true;
+            transform.DOMoveX(0, transSpeed);
+            GetComponent<Animator>().SetTrigger("GoLeft");
+            //transform.position = new Vector3(0, height, transform.position.z);
         }
-        if(other.CompareTag("Obstacle"))
+        if (Input.GetKeyDown(KeyCode.D) && onRight == false && mid == true)
         {
-            speed = 0;
+            onRight = true;
+            mid = false;
+            transform.DOMoveX(rightBorder, transSpeed);
+            GetComponent<Animator>().SetTrigger("GoRight");
+            //transform.position = new Vector3(2, height, transform.position.z);
         }
-        if (other.CompareTag("Point"))
+        else if (Input.GetKeyDown(KeyCode.D) && onLeft == true && mid == false)
         {
-            Score++;
-            other.gameObject.SetActive(false);
+            onLeft = false;
+            mid = true;
+            transform.DOMoveX(0, transSpeed);
+            GetComponent<Animator>().SetTrigger("GoRight");
+            //transform.position = new Vector3(0, height, transform.position.z);
         }
     }
 
