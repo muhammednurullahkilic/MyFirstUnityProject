@@ -38,12 +38,12 @@ public class Move : MonoBehaviour
         transform.Translate(new Vector3(0, 0, 1) * Time.deltaTime * speed);
         //GetComponent<CharacterController>().Move(new Vector3(0, 0, 1) * Time.deltaTime * speed);
 
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    GetComponent<Animator>().SetBool("Run", true);
-        //    animPlay("Run");
-        //    speed = 200;
-        //}
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GetComponent<Animator>().SetBool("Run", true);
+            animPlay("Run");
+            speed = 50;
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GetComponent<Animator>().SetTrigger("Jump");
